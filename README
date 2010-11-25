@@ -1,6 +1,21 @@
 == ComputationalLinguistics
-1. Read  xml document p tags
+
+Aim of this project is to extract collocations from Brown text corpus.
+
+Steps to do this:
+1. Read  xml document s tags
 2. For each pair of <w> tags do the test if it can be a collocation.
   2.1. use hash for storing the data.
+
+ToDo:
+1. build a hash from NN_NN, JJ_NN, VB_NN pairs.
+2. split line into words.
+3.split word into
+
+Real steps done:
+1. opens xml document
+2. navigates xml document for words.
+3. Constructs array of sentences where sentence contains words in format
+[word/type].
 
 You should document your project here.
