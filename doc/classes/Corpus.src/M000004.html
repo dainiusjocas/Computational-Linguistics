@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Corpus)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/corpus.rb, line 22</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">corpus_file_name</span>
+    <span class="ruby-ivar">@noun</span> = <span class="ruby-value str">&quot;NN&quot;</span>
+    <span class="ruby-ivar">@verb</span> = <span class="ruby-value str">&quot;VB&quot;</span>
+    <span class="ruby-ivar">@adjective</span> = <span class="ruby-value str">&quot;JJ&quot;</span>
+    <span class="ruby-ivar">@corpus_file_name</span> = <span class="ruby-identifier">corpus_file_name</span>
+    <span class="ruby-ivar">@array_of_sentences</span> = <span class="ruby-identifier">build_array_of_sentences</span> <span class="ruby-ivar">@corpus_file_name</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

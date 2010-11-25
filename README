@@ -8,9 +8,10 @@ Steps to do this:
   2.1. use hash for storing the data.
 
 ToDo:
-1. build a hash from NN_NN, JJ_NN, VB_NN pairs.
-2. split line into words.
-3.split word into
+1 (impossible). build a hash from NN_NN, JJ_NN, VB_NN pairs.
+2+. split line into words.
+3+. split word into
+4. iterate through the corpus.
 
 Real steps done:
 1. opens xml document

@@ -12,6 +12,7 @@ require 'rexml/document'
 include REXML
 
 class Corpus
+  attr_reader :noun, :verb, :adjective
   attr_accessor :array_of_sentences, :corpus_file_name
 
   # constructor. Saves corpus file name and builds array of sentences from corpus
@@ -19,6 +20,9 @@ class Corpus
   # @param corpus_file_name xml file where the corpus is writen
   #
   def initialize corpus_file_name
+    @noun = "NN"
+    @verb = "VB"
+    @adjective = "JJ"
     @corpus_file_name = corpus_file_name
     @array_of_sentences = build_array_of_sentences @corpus_file_name
   end
@@ -48,5 +52,19 @@ class Corpus
   #
   def get_array_of_words_from_sentence nr
     return split_sentence_to_words @array_of_sentences[nr]
+  end
+
+  # gets type of word
+  #
+  # @param word
+  #
+  def get_type_of_word word
+    return word.split("/")[1]
+  end
+
+  # gets amount of sentences stored in corpus
+  #
+  def get_amount_of_sentences
+    return @array_of_sentences.length
   end
 end
