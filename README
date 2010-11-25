@@ -1,0 +1,6 @@
+== ComputationalLinguistics
+1. Read  xml document p tags
+2. For each pair of <w> tags do the test if it can be a collocation.
+  2.1. use hash for storing the data.
+
+You should document your project here.
