@@ -4,7 +4,7 @@
 require 'corpus'
 
 describe Corpus do
-    @@CORPUS = Corpus.new "test/a01.xml"
+    @@CORPUS = Corpus.new "test/small_corpus.xml"
   before(:each) do
     @corpus = @@CORPUS
   end
@@ -31,6 +31,11 @@ describe Corpus do
     @corpus.array_of_sentences[0] = "The/AT Fulton/NP County/NN"
     temp_array = ['The/AT', 'Fulton/NP', 'County/NN'];
     @corpus.get_array_of_words_from_sentence(0).should == temp_array
+  end
+
+
+  it "amount of sentences should be 4" do
+    @corpus.get_amount_of_sentences.should == 4
   end
 end
 

@@ -8,10 +8,13 @@ Steps to do this:
   2.1. use hash for storing the data.
 
 ToDo:
-1 (impossible). build a hash from NN_NN, JJ_NN, VB_NN pairs.
+!. what i'm suppose to do with dots? HOW?
+1 (possible). build a hash from NN_NN, JJ_NN, VB_NN pairs. the key is the first
+  word in a collocation (head) second is array of tails.
 2+. split line into words.
 3+. split word into
-4. iterate through the corpus.
+4+. iterate through the corpus.
+5. count the matches in collocation units.
 
 Real steps done:
 1. opens xml document

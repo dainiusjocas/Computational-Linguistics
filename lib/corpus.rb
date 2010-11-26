@@ -13,7 +13,7 @@ include REXML
 
 class Corpus
   attr_reader :noun, :verb, :adjective
-  attr_accessor :array_of_sentences, :corpus_file_name
+  attr_accessor :array_of_sentences, :corpus_file_name, :collocations
 
   # constructor. Saves corpus file name and builds array of sentences from corpus
   #
@@ -66,5 +66,11 @@ class Corpus
   #
   def get_amount_of_sentences
     return @array_of_sentences.length
+  end
+
+  # Build a structure for collocations
+  #
+  def extract_collocations
+
   end
 end
