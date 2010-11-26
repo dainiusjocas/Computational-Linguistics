@@ -1,5 +1,12 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+=begin
+  * Name: collocations.rb
+  * Description: this class is for working with the structure of extracted
+  *  collocations
+  * Author: Dainius Jocas
+  * Date: 2010-11-26
+  * License: Copyright (c) 2010 Dainius Jocas
+  * Version: 0.1
+=end
 
 class Collocations
   attr_accessor :structure
@@ -8,7 +15,9 @@ class Collocations
     @structure = Hash.new
   end
 
-  # add a pair of words to the structure of collocations
+  # Adds a pair of words to the structure of collocations.
+  # Value of the hash is an array of strings where every string is tail of
+  # collocation
   #
   # @param head the first word of a collocation
   # @param tail the second word of the collocation

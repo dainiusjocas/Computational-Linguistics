@@ -25,6 +25,7 @@ class Corpus
     @adjective = "JJ"
     @corpus_file_name = corpus_file_name
     @array_of_sentences = build_array_of_sentences @corpus_file_name
+    @collocations = Collocations.new
   end
 
   # returns an array of strings where one string is a sentence which contains
@@ -68,9 +69,26 @@ class Corpus
     return @array_of_sentences.length
   end
 
-  # Build a structure for collocations
+  # Build a structure for collocations. Iterate through every sentence, take
+  # every word from sentence and check if it is JJ, NN, VB type, if it is try to
+  # match a pair for him of the following words.
   #
   def extract_collocations
-
+    0.upto(self.get_amount_of_sentences - 1) {
+      |i|
+      words = get_array_of_words_from_sentence(i)
+      0.upto(words.length - 2) {
+        |j|
+        type_of_word = get_type_of_word words[j]
+        if ((type_of_word == @noun) || (type_of_word == @verb) || (type_of_word == @adjective))
+          (j+1).upto(words.length - 1){
+            |k|
+            if (@noun == (get_type_of_word words[k])) #there should be a method to put a pair of words to callocation structure
+              @collocations.add_pair_of_words(words[j], words[k])
+            end
+          }
+        end
+      }
+    }
   end
 end

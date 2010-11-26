@@ -3,6 +3,7 @@
 Aim of this project is to extract collocations from Brown text corpus.
 
 Steps to do this:
+IDEA: maybe it would be better to build collocations structure while reading from xml file?
 1. Read  xml document s tags
 2. For each pair of <w> tags do the test if it can be a collocation.
   2.1. use hash for storing the data.
