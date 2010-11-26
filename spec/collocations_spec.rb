@@ -31,5 +31,20 @@ describe Collocations do
     @collocations.add_pair_of_words("head2", "tail3")
     @collocations.get_size.should == 2
   end
+
+  it "hash cell with key 'a_a' should be equal to 0" do
+    @collocations.structure["a_a"].should == nil
+  end
+
+  it "hash cell with key 'a_a' should be equal to nil" do
+    @collocations.add_pair "a_a"
+    @collocations.structure["a_a"].should == 1
+  end
+
+  it "hash cell with key 'a_a' should be equal to 2" do
+    @collocations.add_pair "a_a"
+    @collocations.add_pair "a_a"
+    @collocations.structure["a_a"].should == 2
+  end
 end
 

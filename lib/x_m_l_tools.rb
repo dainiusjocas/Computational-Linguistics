@@ -18,16 +18,22 @@ class XMLTools
   attr_accessor :xmlfile_name, :xml_document
   def initialize xml_file_name
     @xml_file_name = xml_file_name
-    @xml_document = get_xml_document @xml_file_name
+    @xml_document = load_xml_document @xml_file_name
   end
 
-  # get xml document by file name
+  # gloads xml document by file name
   #
   # @param file_name
   #
-  def get_xml_document file_name
+  def load_xml_document file_name
     xml_file = File.new file_name, "r"
     return Document.new xml_file
+  end
+
+  # gets xml document
+  #
+  def get_xml_document
+    return @xml_document
   end
 
   # returns an array of strings where one string is a sentence which contains
