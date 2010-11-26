@@ -16,12 +16,13 @@ class XMLTools
   @@attribute_type = 'type'
 
   attr_accessor :xmlfile_name, :xml_document
+
   def initialize xml_file_name
     @xml_file_name = xml_file_name
     @xml_document = load_xml_document @xml_file_name
   end
 
-  # gloads xml document by file name
+  # loads xml document by file name
   #
   # @param file_name
   #
@@ -34,22 +35,5 @@ class XMLTools
   #
   def get_xml_document
     return @xml_document
-  end
-
-  # returns an array of strings where one string is a sentence which contains
-  # words where word are in format [word/type]
-  #
-  def get_array_of_sentences
-    result = Array.new
-    @xml_document.elements.each(@@xpath_to_sentence) {
-      |e|
-      temp = ""
-      e.elements.each(@@xpath_to_word) {
-        |q|
-        temp << q.text << "/" << q.attributes[@@attribute_type] << " "
-        }
-        result.push temp
-    }
-    return result
   end
 end

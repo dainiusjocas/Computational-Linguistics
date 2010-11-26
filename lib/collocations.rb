@@ -10,34 +10,24 @@
 
 class Collocations
   attr_accessor :structure
+  attr_reader :noun, :verb, :adjective
 
   def initialize
     @structure = Hash.new
+    @noun = "NN"
+    @verb = "VB"
+    @adjective = "JJ"
   end
 
   # Adds a pair of words to the structure of collocations.
   # Value of the hash is an array of strings where every string is tail of
   # collocation
   #
-  # @param head the first word of a collocation
-  # @param tail the second word of the collocation
+  # @param head of collocation
+  # @param tail of collocation
   #
-  def add_pair_of_words head, tail
-    if @structure.has_key?(head)
-      (@structure[head]).push tail
-    else
-      @structure[head] = Array.new 1, tail
-    end
-  end
-
-    # Adds a pair of words to the structure of collocations.
-  # Value of the hash is an array of strings where every string is tail of
-  # collocation
-  #
-  # @param head the first word of a collocation
-  # @param tail the second word of the collocation
-  #
-  def add_pair pair
+  def add_pair head, tail
+    pair = head + "_" + tail
     if @structure.has_key?(pair)
       @structure[pair] = @structure[pair] + 1
     else
@@ -45,30 +35,10 @@ class Collocations
     end
   end
 
-  # gets size of the structure of the structure
+  # gets size of the structure of collocations
   #
   def get_size
     return @structure.size
-  end
-
-  # prints structure of collocations in a nice way
-  #
-  def print_structure
-    @structure.each_key {
-      |k|
-      puts k
-      @structure[k].each { |item| print " #{item}"  }
-      puts
-    }
-  end
-
-  # prints updated structure of collocations
-  #
-  def print_collocations_with_frequency
-    @structure.each {
-      |k, v|
-      puts k + " " + v.to_s
-    }
   end
 
   # parses sentence and put pairs of words into the structure
@@ -76,11 +46,44 @@ class Collocations
   # @param sentence string of words [word/type]
   #
   def get_collocations_from_sentence sentence
-  words = sentence.split " "
-  for i in 0..words.size - 2
-    for j in i+1..words.size - 1
-      add_pair words[i] + "_" + words[j] if "NN" == (words[j].split "/")[1]
+    words = sentence.split " "
+    for i in 0..words.size - 2
+      for j in i+1..words.size - 1
+        add_pair words[i], words[j] if "NN" == (words[j].split "/")[1]
+      end
     end
   end
-end
+  
+  # fills the collocation list from the xml file
+  #
+  # @param xml xml file
+  #
+  def build_collocations_from_xml xml
+    xml.elements.each("//s") {
+      |item|
+      sentence = ""
+      item.elements.each("child::node()") {
+        |item2|
+        if (item2.text == ".")
+          get_collocations_from_sentence sentence
+        end
+        if (item2.attributes['type'] == @noun || item2.attributes['type'] == @verb || item2.attributes['type'] == @adjective)
+          sentence += item2.text + "/" + item2.attributes['type'] + " "
+        end
+      }
+    }
+  end
+
+  # Sorts hash of collocations by accurency count
+  #
+  def sort_collocations_by_frequency
+    @structure = @structure.sort{|a,b| a[1]<=>b[1]}.reverse
+  end
+
+  def print_first_n_elements n
+    for i in 0..n
+      puts @structure[i]
+    end
+  end
+
 end

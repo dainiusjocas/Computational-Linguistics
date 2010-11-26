@@ -15,25 +15,13 @@ include REXML
 
 
 puts "===The beginning of the program"
-
+a = Array.new
 collocations = Collocations.new
 xml = XMLTools.new "../test/a01.xml"
 xml = xml.get_xml_document
-xml.elements.each("//s") {
-  |item|
-  sentence = ""
-  item.elements.each("child::node()") {
-    |item2|
-    if (item2.text == ".")
-      collocations.get_collocations_from_sentence sentence
-    end
-    if (item2.attributes['type'] == "NN" || item2.attributes['type'] == "VB" || item2.attributes['type'] == "JJ")
-      sentence += item2.text + "/" + item2.attributes['type'] + " "
-    end
-    #print "#{item2.text}/#{item2.attributes['type']} "
-  }
-}
-collocations.print_collocations_with_frequency
+collocations.build_collocations_from_xml(xml)
+collocations.sort_collocations_by_frequency
+collocations.print_first_n_elements(100)
 
 #corpus = Corpus.new "../test/a01.xml"
 #corpus.extract_collocations
