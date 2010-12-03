@@ -69,7 +69,7 @@ class Corpus
     return @array_of_sentences.length
   end
 
-  # Build a structure for collocations. Iterate through every sentence, take
+  # Build a bigrams for collocations. Iterate through every sentence, take
   # every word from sentence and check if it is JJ, NN, VB type, if it is try to
   # match a pair for him of the following words.
   #
@@ -83,7 +83,7 @@ class Corpus
         if ((type_of_word == @noun) || (type_of_word == @verb) || (type_of_word == @adjective))
           (j+1).upto(words.length - 1){
             |k|
-            if (@noun == (get_type_of_word words[k])) #there should be a method to put a pair of words to callocation structure
+            if (@noun == (get_type_of_word words[k])) #there should be a method to put a pair of words to callocation bigrams
               @collocations.add_pair_of_words(words[j], words[k])
             end
           }
