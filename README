@@ -9,7 +9,7 @@ IDEA: maybe it would be better to build collocations structure while reading fro
   2.1. use hash for storing the data.
 
 ToDo:
-!. what i'm suppose to do with dots? HOW?
+!. what i'm suppose to do with dots? HOW? (solved)
 1 (possible). build a hash from NN_NN, JJ_NN, VB_NN pairs. the key is the first
   word in a collocation (head) second is array of tails.
 2+. split line into words.
@@ -19,8 +19,18 @@ ToDo:
 
 Real steps done:
 1. opens xml document
-2. navigates xml document for words.
-3. Constructs array of sentences where sentence contains words in format
-[word/type].
+2. navigates xml document for sentences.
+2.1 sentence is the word list with type only NN, VB, JJ
+3. when parser reaches the end of the sentence the sentence is sent to bigrams
+  hash.
+4. Builds hash of startings of collocations with counter.
+5. Builds hash of endings of collocations with counter.
+
+Fixes:
+1. Fixed 'one bigram in a file' problem. This problem appears when file hasn't
+  dot at the end of the sentence.
+2. Hash.sort method change the type to an array
 
 You should document your project here.
+
+TODO:

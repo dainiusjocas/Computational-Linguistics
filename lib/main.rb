@@ -15,18 +15,22 @@ include REXML
 
 
 puts "===The beginning of the program"
-a = Array.new
 collocations = Collocations.new
 xml = XMLTools.new "../test/a01.xml"
 xml = xml.get_xml_document
 collocations.build_collocations_from_xml(xml)
-#collocations.print_first_n_elements(100)
-collocations.print_endings
+collocations.count_chi_square
+puts "The most frequent bigrams"
+collocations.print_n_most_frequent_bigrams(100)
+puts "========================================================================="
+puts "Collocations with largest chi-square values"
+collocations.print_n_bigrams_with_biggest_chi_square_value 100
+puts "========================================================================="
 
 #corpus = Corpus.new "../test/a01.xml"
 #corpus.extract_collocations
 #
-#corpus.collocations.print_bigrams
+#corpus.collocations.print_bigrams_with_count
 #puts corpus.get_array_of_words_from_sentence(0)
 puts
 puts "===The end of the program"
