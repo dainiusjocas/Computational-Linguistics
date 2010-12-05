@@ -25,6 +25,7 @@ Real steps done:
   hash.
 4. Builds hash of startings of collocations with counter.
 5. Builds hash of endings of collocations with counter.
+5. Builds has of bigrams with chi-square values.
 
 Fixes:
 1. Fixed 'one bigram in a file' problem. This problem appears when file hasn't
@@ -34,3 +35,5 @@ Fixes:
 You should document your project here.
 
 TODO:
+1. How to measure the corelation?
+2. What about the context?
