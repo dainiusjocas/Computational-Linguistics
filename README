@@ -9,7 +9,7 @@ IDEA: maybe it would be better to build collocations structure while reading fro
   2.1. use hash for storing the data.
 
 ToDo:
-!. what i'm suppose to do with dots? HOW? (solved)
+!. save the location of the bigram in the xml file!!!!!
 1 (possible). build a hash from NN_NN, JJ_NN, VB_NN pairs. the key is the first
   word in a collocation (head) second is array of tails.
 2+. split line into words.
