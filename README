@@ -3,13 +3,9 @@
 Aim of this project is to extract collocations from Brown text corpus.
 
 Steps to do this:
-IDEA: maybe it would be better to build collocations structure while reading from xml file?
-1. Read  xml document s tags
-2. For each pair of <w> tags do the test if it can be a collocation.
-  2.1. use hash for storing the data.
+1. 
 
 ToDo:
-!. save the location of the bigram in the xml file!!!!!
 1 (possible). build a hash from NN_NN, JJ_NN, VB_NN pairs. the key is the first
   word in a collocation (head) second is array of tails.
 2+. split line into words.
@@ -19,13 +15,14 @@ ToDo:
 
 Real steps done:
 1. opens xml document
-2. navigates xml document for sentences.
-2.1 sentence is the word list with type only NN, VB, JJ
-3. when parser reaches the end of the sentence the sentence is sent to bigrams
-  hash.
-4. Builds hash of startings of collocations with counter.
-5. Builds hash of endings of collocations with counter.
-5. Builds has of bigrams with chi-square values.
+2. navigates xml document for xml chunks.
+3. From xml chunks go to sentences.
+4. Parse sentences for bigrams.
+5. Builds hash of startings of collocations with counter.
+6. Builds hash of endings of collocations with counter.
+7. Count simple frequency of bigram in document
+8. count chi-square values for bigrams
+
 
 Fixes:
 1. Fixed 'one bigram in a file' problem. This problem appears when file hasn't
