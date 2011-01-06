@@ -15,11 +15,21 @@ include REXML
 
 
 puts "The beginning of the program============================================="
+puts Time.new
 collocations = Collocations.new
-xml = XMLTools.new "../test/a01.xml"
+xml = XMLTools.new "../test/Corpus.xml"
 xml = xml.get_xml_document
+puts "XML was read #{Time.new}"
 collocations.build_collocations_from_xml(xml)
+puts "Collocations were build #{Time.new}"
+puts Time.new
 
+collocations.print_n_most_frequent_bigrams(1000)
+puts "The most frequent bigrams written to file"
+puts Time.new
+collocations.count_chi_square
+collocations.print_n_bigrams_with_biggest_chi_square_value(1000)
+puts "Chi square values written to file"
 #collocations.bigrams_with_location_in_file.each { |key, value|
 #  out.puts "#{key} #{value}"
 #}
@@ -31,3 +41,4 @@ collocations.build_collocations_from_xml(xml)
 #collocations.print_n_bigrams_with_biggest_chi_square_value 1000
 
 puts "The end of the program==================================================="
+puts Time.new
