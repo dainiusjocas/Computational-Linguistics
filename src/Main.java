@@ -22,10 +22,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Date start = new Date();
         Bigrams bigrams = new Bigrams(1000000);
-        bigrams.loadBigramsFromFile("brown_tei/Corpus.xml");
+        bigrams.loadBigramsFromFile("data/Corpus.xml");
+        bigrams.printBigramsToFileByLargestChiSquareValue("results/chi_square.txt", 1000);
         //bigrams.printMostFrequentBigrams(100);
-        //bigrams.printHashMap(bigrams.getBigramsWithCount(), "hashmap");
-        bigrams.printToFileMostFrequentBigrams("frequency.txt", 1000);
+
         puts(new Date().getTime() - start.getTime());
     }
 

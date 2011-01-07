@@ -27,11 +27,14 @@ public class Bigrams {
     public static final String VERB = "VB";
     public static final String ADJECTIVE = "JJ";
     public static final String ATTRIBUTE_NAME = "type";
+    public static final String WORD = "w";
+    public static final String PUNCTUATION = "c";
 
     private HashMap bigramsWithCount;
     private HashMap headsOfBigramsWithCount;
     private HashMap tailsOfBigramsWithCount;
     private HashMap bigramsWithChiSquareValue;
+    private int totalNumberOfBigrams;
 
     /**
      * Constructor which initializes hashmaps used in computations of bigrams.
@@ -45,44 +48,80 @@ public class Bigrams {
         bigramsWithChiSquareValue = new HashMap(size);
     }
 
-
+    /**
+     * From the specified xml file reads all the bigrams.
+     *
+     * @param fileURI
+     */
     public void loadBigramsFromFile(String fileURI) {
         try {
-            File input = new File(fileURI);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(input);
+            Document doc = db.parse(new File(fileURI));
             doc.getDocumentElement().normalize();
-
             NodeList listOfSentences = doc.getElementsByTagName(X_PATH_SENTENCE);
-            for (int i = 0; i < listOfSentences.getLength(); i++) {
-                Element sentence = (Element)listOfSentences.item(i);
-
-                NodeList listOfPartsOfSentence = sentence.getChildNodes();
-
-                ArrayList subSentence = new ArrayList();
-                for (int j = 0; j < listOfPartsOfSentence.getLength(); j++) {
-                    
-                    if (!"w".equals(listOfPartsOfSentence.item(j).getNodeName())) {
-                        if ("c".equals(listOfPartsOfSentence.item(j).getNodeName())) {
-                            parseSubSentence(subSentence);
-                            subSentence = new ArrayList();
-                        }
-                        continue;
-                    }
-                    Element word = (Element)listOfPartsOfSentence.item(j);
-                    if (NOUN.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
-                            VERB.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
-                            ADJECTIVE.equals(word.getAttribute(ATTRIBUTE_NAME))) {
-                        subSentence.add(word);
-                    }
-                }
-                parseSubSentence(subSentence);
-            }
+            parseListOfSentences(listOfSentences);
+            totalNumberOfBigrams = this.bigramsWithCount.size();
         }
         catch (Exception e) {
             System.out.println("ERROR");
         }
+    }
+
+
+    /**
+     * Checks if the word is of type of interest.
+     *
+     * @param word Element of xml whose tad is named w
+     * @return true if word is of type of interest, false otherwise
+     */
+    public boolean isTypeInteresting(Element word) {
+        if(NOUN.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
+                            VERB.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
+                            ADJECTIVE.equals(word.getAttribute(ATTRIBUTE_NAME))) {
+             return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Method goes through list of sentences and calls method parseSentence for
+     * each sentence
+     * 
+     * @param listOfSentences
+     */
+    public void parseListOfSentences(NodeList listOfSentences ) {
+        for (int i = 0; i < listOfSentences.getLength(); i++) {
+            Element sentence = (Element)listOfSentences.item(i);
+            parseSentence(sentence);
+        }
+    }
+
+    /**
+     * Goes through nodes of sentence of checks if the node is of type of
+     * interest
+     *
+     * @param sentence
+     */
+    public void parseSentence(Element sentence) {
+        NodeList listOfPartsOfSentence = sentence.getChildNodes();
+
+        ArrayList subSentence = new ArrayList();
+        for (int j = 0; j < listOfPartsOfSentence.getLength(); j++) {
+
+            if (!WORD.equals(listOfPartsOfSentence.item(j).getNodeName())) {
+                if (PUNCTUATION.equals(listOfPartsOfSentence.item(j).getNodeName())) {
+                    parseSubSentence(subSentence);
+                    subSentence = new ArrayList();
+                }
+                continue;
+            }
+            Element word = (Element)listOfPartsOfSentence.item(j);
+            if (isTypeInteresting(word)) {
+                subSentence.add(word);
+            }
+        }
+        parseSubSentence(subSentence);
     }
 
     /**
@@ -106,7 +145,7 @@ public class Bigrams {
                     bigram.append(head).append("_").append(tail);
                     handleHashMap(bigramsWithCount, bigram.toString());
                     handleHashMap(headsOfBigramsWithCount, head.toString());
-                    handleHashMap(tailsOfBigramsWithCount, head.toString());
+                    handleHashMap(tailsOfBigramsWithCount, tail.toString());
                 }
                 bigram = new StringBuilder();
                 head = new StringBuilder();
@@ -197,6 +236,51 @@ public class Bigrams {
         }
     }
 
+    public void printBigramsToFileByLargestChiSquareValue(String fileURI,
+            int howMany) {
+        FileOutputStream fos;
+        DataOutputStream dos;
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileURI));
+            BigramWithChiSquare[] bigrams = sortBigramsByChiSquareValue();
+            for(int i = 0; i < howMany; i++) {
+                out.write(bigrams[i].bigram + " " + bigrams[i].chiSquare + "\n");
+            }
+            out.close();
+
+        } catch (IOException e) {
+        }
+    }
+
+    public BigramWithChiSquare[] sortBigramsByChiSquareValue() {
+        BigramWithChiSquare[] bigramsSortedByChiSquare = new BigramWithChiSquare
+                [this.getBigramsWithCount().size()];
+        Set<Map.Entry<String, Integer>> set = this.bigramsWithCount.entrySet();
+        int i = 0;
+        for (Map.Entry<String, Integer> me : set) {
+            bigramsSortedByChiSquare[i] = new BigramWithChiSquare(me.getKey(),
+                    countChiSquare(me.getKey()));
+            i++;
+        }
+        quickSort(bigramsSortedByChiSquare, 0, bigramsSortedByChiSquare.length-1);
+        return bigramsSortedByChiSquare;
+    }
+
+    public float countChiSquare(String bigram) {
+        int headCount = getHeadCount(bigram);
+        int tailCount = getTailCount(bigram);
+        return (headCount * tailCount) / new Float(totalNumberOfBigrams);
+    }
+
+    public int getHeadCount(String bigram) {
+        String head = bigram.split("_")[0];
+        return getCount(headsOfBigramsWithCount, head);
+    }
+
+    public int getTailCount(String bigram) {
+        String tail = bigram.split("_")[1];
+        return getCount(headsOfBigramsWithCount, tail);
+    }
     /**
      * Converts hashmap of bigrams to array where member of array is object of
      * class EntryOfArray, then sorts created array and returns sorted array
@@ -213,7 +297,7 @@ public class Bigrams {
                     me.getValue());
             i++;
         }
-        quickSort(bigramsSortedByCount, 0, bigramsSortedByCount.length-1);
+        //quickSort(bigramsSortedByCount, 0, bigramsSortedByCount.length-1);
         return bigramsSortedByCount;
     }
 
@@ -225,15 +309,15 @@ public class Bigrams {
      * @param right
      * @return
      */
-    int partition(EntryOfArray arr[], int left, int right){
+    int partition(BigramWithChiSquare arr[], int left, int right){
         int i = left;
         int j = right;
-        EntryOfArray tmp;
-        int pivot = arr[(left + right) / 2].value;
+        BigramWithChiSquare tmp;
+        Float pivot = arr[(left + right) / 2].chiSquare;
         while (i <= j) {
-            while (arr[i].value > pivot)
+            while (arr[i].chiSquare > pivot)
                 i++;
-            while (arr[j].value < pivot)
+            while (arr[j].chiSquare < pivot)
                 j--;
             if (i <= j) {
                 tmp = arr[i];
@@ -253,7 +337,7 @@ public class Bigrams {
      * @param left
      * @param right
      */
-    void quickSort(EntryOfArray arr[], int left, int right) {
+    void quickSort(BigramWithChiSquare arr[], int left, int right) {
           int index = partition(arr, left, right);
           if (left < index - 1)
                 quickSort(arr, left, index - 1);
