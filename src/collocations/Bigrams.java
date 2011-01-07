@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package collocations;
 
 import java.util.HashMap;
@@ -17,7 +12,7 @@ import java.io.*;
 import java.util.Map;
 
 /**
- *
+ * This class is used to compute information about bigrams.
  * @author dj
  */
 public class Bigrams {
@@ -33,7 +28,6 @@ public class Bigrams {
     private HashMap bigramsWithCount;
     private HashMap headsOfBigramsWithCount;
     private HashMap tailsOfBigramsWithCount;
-    private HashMap bigramsWithChiSquareValue;
     private int totalNumberOfBigrams;
 
     /**
@@ -45,9 +39,25 @@ public class Bigrams {
         bigramsWithCount = new HashMap(size);
         headsOfBigramsWithCount = new HashMap(size);
         tailsOfBigramsWithCount = new HashMap(size);
-        bigramsWithChiSquareValue = new HashMap(size);
     }
-
+    
+    public HashMap getBigramsWithCount() {
+        return this.bigramsWithCount;
+    }
+    public HashMap getHeadsOfBigramsWithCount() {
+        return this.headsOfBigramsWithCount;
+    }
+    public HashMap getTailsOfBigramsWithCount() {
+        return this.tailsOfBigramsWithCount;
+    }
+    public int getHeadCount(String bigram) {
+        String head = bigram.split("_")[0];
+        return getCount(headsOfBigramsWithCount, head);
+    }
+    public int getTailCount(String bigram) {
+        String tail = bigram.split("_")[1];
+        return getCount(headsOfBigramsWithCount, tail);
+    }
     /**
      * From the specified xml file reads all the bigrams.
      *
@@ -66,22 +76,6 @@ public class Bigrams {
         catch (Exception e) {
             System.out.println("ERROR");
         }
-    }
-
-
-    /**
-     * Checks if the word is of type of interest.
-     *
-     * @param word Element of xml whose tad is named w
-     * @return true if word is of type of interest, false otherwise
-     */
-    public boolean isTypeInteresting(Element word) {
-        if(NOUN.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
-                            VERB.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
-                            ADJECTIVE.equals(word.getAttribute(ATTRIBUTE_NAME))) {
-             return true;
-        }
-        return false;
     }
     
     /**
@@ -110,7 +104,8 @@ public class Bigrams {
         for (int j = 0; j < listOfPartsOfSentence.getLength(); j++) {
 
             if (!WORD.equals(listOfPartsOfSentence.item(j).getNodeName())) {
-                if (PUNCTUATION.equals(listOfPartsOfSentence.item(j).getNodeName())) {
+                if (PUNCTUATION.equals(listOfPartsOfSentence.item(j).
+                        getNodeName())) {
                     parseSubSentence(subSentence);
                     subSentence = new ArrayList();
                 }
@@ -125,6 +120,20 @@ public class Bigrams {
     }
 
     /**
+     * Checks if the word is of type of interest.
+     *
+     * @param word Element of xml whose tad is named w
+     * @return true if word is of type of interest, false otherwise
+     */
+    public boolean isTypeInteresting(Element word) {
+        if(NOUN.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
+                            VERB.equals(word.getAttribute(ATTRIBUTE_NAME)) ||
+                            ADJECTIVE.equals(word.getAttribute(ATTRIBUTE_NAME)))
+        { return true; }
+        return false;
+    }
+
+    /**
      * Put parts of subsentence to the structures of collocations class
      *
      * @param subSentence
@@ -135,13 +144,18 @@ public class Bigrams {
         StringBuilder tail = new StringBuilder();
         for (int i = 0; i < subSentence.size() - 1; i++) {
             for (int j = i + 1; j < subSentence.size(); j++) {
-                if (NOUN.equals(((Element)subSentence.get(j)).getAttribute("type"))) {
-                    head.append(((Element)subSentence.get(i)).getTextContent().toLowerCase())
+                if (NOUN.equals(((Element)subSentence.get(j)).
+                        getAttribute(ATTRIBUTE_NAME))) {
+                    head.append(((Element)subSentence.get(i)).getTextContent()
+                            .toLowerCase())
                             .append("/")
-                            .append(((Element)subSentence.get(i)).getAttribute("type"));
-                    tail.append(((Element)subSentence.get(j)).getTextContent().toLowerCase())
+                            .append(((Element)subSentence.get(i))
+                            .getAttribute(ATTRIBUTE_NAME));
+                    tail.append(((Element)subSentence.get(j)).getTextContent()
+                            .toLowerCase())
                             .append("/")
-                            .append(((Element)subSentence.get(j)).getAttribute("type"));
+                            .append(((Element)subSentence.get(j))
+                            .getAttribute(ATTRIBUTE_NAME));
                     bigram.append(head).append("_").append(tail);
                     handleHashMap(bigramsWithCount, bigram.toString());
                     handleHashMap(headsOfBigramsWithCount, head.toString());
@@ -152,19 +166,6 @@ public class Bigrams {
                 tail = new StringBuilder();
             }
         }
-    }
-
-    public HashMap getBigramsWithCount() {
-        return this.bigramsWithCount;
-    }
-    public HashMap getBigramsWithChiSquareValue() {
-        return this.bigramsWithChiSquareValue;
-    }
-    public HashMap getHeadsOfBigramsWithCount() {
-        return this.headsOfBigramsWithCount;
-    }
-    public HashMap getTailsOfBigramsWithCount() {
-        return this.tailsOfBigramsWithCount;
     }
 
     /**
@@ -182,6 +183,17 @@ public class Bigrams {
         else {
              return 0;
         }
+    }
+
+    /**
+     * Gets chi square value of the bigram
+     *
+     * @param bigram
+     * @return
+     */
+    public float countChiSquare(String bigram) {
+        return (getHeadCount(bigram) * getTailCount(bigram)) /
+                new Float(this.totalNumberOfBigrams);
     }
 
     /**
@@ -205,30 +217,32 @@ public class Bigrams {
      * bigrams to console
      *
      * @param howMany
+     * @param sortBy
      */
-    public void printMostFrequentBigrams(int howMany) {
-        EntryOfArray[] bigrams = sortBigramsByCount();
+    public void printBigramsSortedBy(int howMany, String sortBy) {
+        BigramWithMeasures[] bigrams = sortBigramsBy(sortBy);
         for(int i = 0; i < howMany; i++) {
-            System.out.println(bigrams[i].key + " " + bigrams[i].value);
+            System.out.println(bigrams[i].getBigram() + " " +
+                    bigrams[i].getValue(sortBy));
         }
     }
 
     /**
-     * Order bigrams by frequency and print specified amount of most frequent
-     * bigrams to specified file
-     * 
+     * This method sorts bigrams by the measure of the bigram specified by
+     * parameter sortBy and then writes sorted bigrams to file
+     *
      * @param fileURI
      * @param howMany
+     * @param sortBy
      */
-    public void printToFileMostFrequentBigrams(String fileURI, int howMany) {
-        FileOutputStream fos;
-        DataOutputStream dos;
+    public void printBigramsToFileSortedBy(String fileURI, int howMany,
+            String sortBy) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(fileURI));
-
-            EntryOfArray[] bigrams = sortBigramsByCount();
+            BigramWithMeasures[] bigrams = sortBigramsBy(sortBy);
             for(int i = 0; i < howMany; i++) {
-                out.write(bigrams[i].key + " " + bigrams[i].value + "\n");
+                out.write(bigrams[i].getBigram() + " " +
+                        bigrams[i].getValue(sortBy) + "\n");
             }
             out.close();
 
@@ -236,113 +250,33 @@ public class Bigrams {
         }
     }
 
-    public void printBigramsToFileByLargestChiSquareValue(String fileURI,
-            int howMany) {
-        FileOutputStream fos;
-        DataOutputStream dos;
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(fileURI));
-            BigramWithChiSquare[] bigrams = sortBigramsByChiSquareValue();
-            for(int i = 0; i < howMany; i++) {
-                out.write(bigrams[i].bigram + " " + bigrams[i].chiSquare + "\n");
-            }
-            out.close();
-
-        } catch (IOException e) {
-        }
-    }
-
-    public BigramWithChiSquare[] sortBigramsByChiSquareValue() {
-        BigramWithChiSquare[] bigramsSortedByChiSquare = new BigramWithChiSquare
-                [this.getBigramsWithCount().size()];
-        Set<Map.Entry<String, Integer>> set = this.bigramsWithCount.entrySet();
-        int i = 0;
-        for (Map.Entry<String, Integer> me : set) {
-            bigramsSortedByChiSquare[i] = new BigramWithChiSquare(me.getKey(),
-                    countChiSquare(me.getKey()));
-            i++;
-        }
-        quickSort(bigramsSortedByChiSquare, 0, bigramsSortedByChiSquare.length-1);
-        return bigramsSortedByChiSquare;
-    }
-
-    public float countChiSquare(String bigram) {
-        int headCount = getHeadCount(bigram);
-        int tailCount = getTailCount(bigram);
-        return (headCount * tailCount) / new Float(totalNumberOfBigrams);
-    }
-
-    public int getHeadCount(String bigram) {
-        String head = bigram.split("_")[0];
-        return getCount(headsOfBigramsWithCount, head);
-    }
-
-    public int getTailCount(String bigram) {
-        String tail = bigram.split("_")[1];
-        return getCount(headsOfBigramsWithCount, tail);
-    }
     /**
      * Converts hashmap of bigrams to array where member of array is object of
-     * class EntryOfArray, then sorts created array and returns sorted array
+     * class BigramWithMeasures, then sorts created array and returns sorted
+     * array
      *
      * @return sorted array of bigrams
      */
-    public EntryOfArray[] sortBigramsByCount() {
-        EntryOfArray[] bigramsSortedByCount = new EntryOfArray
+    public BigramWithMeasures[] sortBigramsBy(String sortBy) {
+        BigramWithMeasures[] sortedBigrams = new BigramWithMeasures
                 [this.getBigramsWithCount().size()];
         Set<Map.Entry<String, Integer>> set = this.bigramsWithCount.entrySet();
         int i = 0;
-        for (Map.Entry<String, Integer> me : set) {
-            bigramsSortedByCount[i] = new EntryOfArray(me.getKey(),
-                    me.getValue());
-            i++;
-        }
-        //quickSort(bigramsSortedByCount, 0, bigramsSortedByCount.length-1);
-        return bigramsSortedByCount;
-    }
-
-    /**
-     * Method which does one iteration of quicksort
-     *
-     * @param arr
-     * @param left
-     * @param right
-     * @return
-     */
-    int partition(BigramWithChiSquare arr[], int left, int right){
-        int i = left;
-        int j = right;
-        BigramWithChiSquare tmp;
-        Float pivot = arr[(left + right) / 2].chiSquare;
-        while (i <= j) {
-            while (arr[i].chiSquare > pivot)
+        if (BigramWithMeasures.FREQUENCY.equals(sortBy)) {
+            for (Map.Entry<String, Integer> me : set) {
+                sortedBigrams[i] = new BigramWithMeasures(me.getKey(),
+                        me.getValue());
                 i++;
-            while (arr[j].chiSquare < pivot)
-                j--;
-            if (i <= j) {
-                tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
+            }
+        } else if (BigramWithMeasures.CHI_SQUARE.equals(sortBy)) {
+            for (Map.Entry<String, Integer> me : set) {
+                sortedBigrams[i] = new BigramWithMeasures(me.getKey(),
+                        countChiSquare(me.getKey()));
                 i++;
-                j--;
             }
         }
-        return i;
-    }
-
-    /**
-     * Method to start do quicksorting recursively
-     *
-     * @param arr
-     * @param left
-     * @param right
-     */
-    void quickSort(BigramWithChiSquare arr[], int left, int right) {
-          int index = partition(arr, left, right);
-          if (left < index - 1)
-                quickSort(arr, left, index - 1);
-          if (index < right)
-                quickSort(arr, index, right);
+        Ordering.quickSort(sortedBigrams, 0, sortedBigrams.length-1, sortBy);
+        return sortedBigrams;
     }
 
     public static void puts(Object arg) {
@@ -356,18 +290,13 @@ public class Bigrams {
      * @param fileURI
      */
     public void printHashMap(HashMap hashMap, String fileURI) {
-        FileOutputStream fos;
-        DataOutputStream dos;
         Set<Map.Entry<String, Integer>> set = hashMap.entrySet();
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(fileURI));
             for (Map.Entry<String, Integer> me : set) {
-                out.write(me.getKey() + " ");
-                out.write(me.getValue().toString() + "\n");
+                out.write(me.getKey() + " " + me.getValue().toString() + "\n");
             }
             out.close();
-
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
     }
 }

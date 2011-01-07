@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 import collocations.Bigrams;
+import collocations.BigramWithMeasures;
 import java.io.IOException;
 import java.util.Date;
 
@@ -22,9 +16,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Date start = new Date();
         Bigrams bigrams = new Bigrams(1000000);
-        bigrams.loadBigramsFromFile("data/Corpus.xml");
-        bigrams.printBigramsToFileByLargestChiSquareValue("results/chi_square.txt", 1000);
-        //bigrams.printMostFrequentBigrams(100);
+        bigrams.loadBigramsFromFile("data/a01.xml");
+        bigrams.printBigramsToFileSortedBy("chi_square.txt", 100,
+                BigramWithMeasures.FREQUENCY);
 
         puts(new Date().getTime() - start.getTime());
     }
