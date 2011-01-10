@@ -23,12 +23,22 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         Date start = new Date();
+        Bigrams bigrams = new Bigrams(1000000);
+        bigrams.loadBigramsFromFile(args[0]);
+        if ("-f".equals(args[2])) {
+            bigrams.printBigramsToFileSortedBy(args[1],
+                    Integer.parseInt(args[3]), BigramWithMeasures.FREQUENCY);
+        } else if ("-c".equalsIgnoreCase(args[2])) {
+            bigrams.printBigramsToFileSortedBy(args[1],
+                    bigrams.getBigramsWithCount().size(),
+                    BigramWithMeasures.CHI_SQUARE);
+        }
+        System.out.println("Results of the computations you can find in file " + args[1]);
         //System.out.println(getPartOfSpeechCount("data/Corpus.xml", "VB"));
-        Similarity bigrams = new Similarity("results/1000_frequency.txt");
-        System.out.println(bigrams.findNumberOfOccurencesAsTail("af"));
+        //Similarity bigrams = new Similarity("results/1000_frequency.txt");
+        //System.out.println(bigrams.findNumberOfOccurencesAsTail("af"));
         //bigrams.measureSimilarityOfWords("af", "cell");
-//        Bigrams bigrams = new Bigrams(1000000);
-//        bigrams.loadBigramsFromFile("data/Corpus.xml"/*args[0]*/);
+
 //        bigrams.printBigramsToFileSortedBy("temp"/*args[1]*/, bigrams.getBigramsWithCount().size(), BigramWithMeasures.CHI_SQUARE);
 
         System.out.println("Total execution time: " + 
