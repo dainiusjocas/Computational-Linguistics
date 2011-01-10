@@ -1,7 +1,15 @@
+import collocations.BigramForSimilarity;
 import collocations.Bigrams;
 import collocations.BigramWithMeasures;
+import collocations.Similarity;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import javax.swing.text.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -15,15 +23,34 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         Date start = new Date();
-        Bigrams bigrams = new Bigrams(1000000);
-        bigrams.loadBigramsFromFile("data/a01.xml");
-        bigrams.printBigramsToFileSortedBy("chi_square.txt", 100,
-                BigramWithMeasures.FREQUENCY);
+        //System.out.println(getPartOfSpeechCount("data/Corpus.xml", "VB"));
+        Similarity bigrams = new Similarity("results/1000_frequency.txt");
+        System.out.println(bigrams.findNumberOfOccurencesAsTail("af"));
+        //bigrams.measureSimilarityOfWords("af", "cell");
+//        Bigrams bigrams = new Bigrams(1000000);
+//        bigrams.loadBigramsFromFile("data/Corpus.xml"/*args[0]*/);
+//        bigrams.printBigramsToFileSortedBy("temp"/*args[1]*/, bigrams.getBigramsWithCount().size(), BigramWithMeasures.CHI_SQUARE);
 
-        puts(new Date().getTime() - start.getTime());
+        System.out.println("Total execution time: " + 
+                (new Date().getTime() - start.getTime()) + "ms");
     }
 
-    public static void puts(Object toPrint) {
-        System.out.println(toPrint);
+    static int getPartOfSpeechCount(String fileURI, String partOfSpeech) {
+        int count = 0;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            org.w3c.dom.Document doc = db.parse(new File(fileURI));
+            doc.getDocumentElement().normalize();
+            NodeList listOfWords = doc.getElementsByTagName("w");
+            for (int i = 0; i < listOfWords.getLength(); i++) {
+                if (((Element) listOfWords.item(i)).getAttribute("type").equals(partOfSpeech))
+                count++;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("ERROR");
+        }
+        return count;
     }
 }
