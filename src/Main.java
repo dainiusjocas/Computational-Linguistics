@@ -1,10 +1,15 @@
 import collocations.BigramForSimilarity;
 import collocations.Bigrams;
 import collocations.BigramWithMeasures;
+import collocations.Context;
 import collocations.Similarity;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,17 +28,30 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         Date start = new Date();
-        Bigrams bigrams = new Bigrams(1000000);
-        bigrams.loadBigramsFromFile(args[0]);
-        if ("-f".equals(args[2])) {
-            bigrams.printBigramsToFileSortedBy(args[1],
-                    Integer.parseInt(args[3]), BigramWithMeasures.FREQUENCY);
-        } else if ("-c".equalsIgnoreCase(args[2])) {
-            bigrams.printBigramsToFileSortedBy(args[1],
-                    bigrams.getBigramsWithCount().size(),
-                    BigramWithMeasures.CHI_SQUARE);
+//        Bigrams bigrams = new Bigrams(1000000);
+//        bigrams.loadBigramsFromFile(args[0]);
+//        if ("-f".equals(args[2])) {
+//            bigrams.printBigramsToFileSortedBy(args[1],
+//                    Integer.parseInt(args[3]), BigramWithMeasures.FREQUENCY);
+//        } else if ("-c".equalsIgnoreCase(args[2])) {
+//            bigrams.printBigramsToFileSortedBy(args[1],
+//                    bigrams.getBigramsWithCount().size(),
+//                    BigramWithMeasures.CHI_SQUARE);
+//        } else if ("-x".equalsIgnoreCase(args[2])) {
+        ArrayList <String> bigrams = new ArrayList<String>();
+        int n = 10;
+        String fileURI = "results/all_frequency";
+        getNMostFrequentBigrams(bigrams, fileURI, n);
+        Context context = new Context(bigrams);
+        context.getInterestingContext("data/Corpus.xml");
+        for (String bigram : bigrams) {
+            System.out.print(bigram + " ");
+            System.out.println(((HashMap)context.bigramsWithContext.get(bigram)).size());
+
         }
-        System.out.println("Results of the computations you can find in file " + args[1]);
+        //}
+        //System.out.println(getPartOfSpeechCount("data/Corpus.xml", "ss"));
+        //System.out.println("Results of the computations you can find in file " + args[1]);
         //System.out.println(getPartOfSpeechCount("data/Corpus.xml", "VB"));
         //Similarity bigrams = new Similarity("results/1000_frequency.txt");
         //System.out.println(bigrams.findNumberOfOccurencesAsTail("af"));
@@ -53,14 +71,29 @@ public class Main {
             org.w3c.dom.Document doc = db.parse(new File(fileURI));
             doc.getDocumentElement().normalize();
             NodeList listOfWords = doc.getElementsByTagName("w");
-            for (int i = 0; i < listOfWords.getLength(); i++) {
-                if (((Element) listOfWords.item(i)).getAttribute("type").equals(partOfSpeech))
-                count++;
-            }
+            count = listOfWords.getLength();
+//            for (int i = 0; i < listOfWords.getLength(); i++) {
+//                if (((Element) listOfWords.item(i)).getAttribute("type").equals(partOfSpeech))
+//                count++;
+//            }
         }
         catch (Exception e) {
             System.out.println("ERROR");
         }
         return count;
+    }
+
+    static void getNMostFrequentBigrams(ArrayList bigrams, String fileURI, int n) {
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(fileURI));
+            String line;
+            int index = 0;
+            while ((line = in.readLine()) != null) {
+                bigrams.add(line.split(" ")[0]);
+                index++;
+                if (index > n) { break; }
+            }
+            in.close();
+        } catch (Exception e) { System.out.println("no such file"); }
     }
 }
