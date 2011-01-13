@@ -39,16 +39,14 @@ public class Main {
 //                    BigramWithMeasures.CHI_SQUARE);
 //        } else if ("-x".equalsIgnoreCase(args[2])) {
         ArrayList <String> bigrams = new ArrayList<String>();
-        int n = 10;
+        int n = 100;
         String fileURI = "results/all_frequency";
         getNMostFrequentBigrams(bigrams, fileURI, n);
         Context context = new Context(bigrams);
         context.getInterestingContext("data/Corpus.xml");
-        for (String bigram : bigrams) {
-            System.out.print(bigram + " ");
-            System.out.println(((HashMap)context.bigramsWithContext.get(bigram)).size());
-
-        }
+        context.getDistancesBetweenBigrams();
+        context.printDistances("distances");
+//b
         //}
         //System.out.println(getPartOfSpeechCount("data/Corpus.xml", "ss"));
         //System.out.println("Results of the computations you can find in file " + args[1]);
