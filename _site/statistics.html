@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>dainiusjocas/Computational-Linguistics @ GitHub</title>
+	
+	<style type="text/css">
+		body {
+		margin-top: 1.0em;
+		background-color: #fd8fb7;
+		font-family: "Helvetica,Arial,FreeSans";
+		color: #000000;
+	}
+	#container {
+		margin: 0 auto;
+		width: 700px;
+	}
+		h1 { font-size: 3.8em; color: #027048; margin-bottom: 3px; }
+		h1 .small { font-size: 0.4em; }
+		h1 a { text-decoration: none }
+		h2 { font-size: 1.5em; color: #027048; }
+	h3 { text-align: center; color: #027048; }
+	a { color: #027048; }
+	.description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+	.download { float: right; }
+		pre { background: #000; color: #fff; padding: 15px;}
+	hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+	.footer { text-align:center; padding-top:30px; font-style: italic; }
+	</style>
+	
+</head>
+
+<body>
+<a href="http://github.com/dainiusjocas/Computational-Linguistics"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+<div id="container">
+
+	<div class="download">
+		<a href="http://github.com/dainiusjocas/Computational-Linguistics/zipball/master">
+		<img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+		<a href="http://github.com/dainiusjocas/Computational-Linguistics/tarball/master">
+		<img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+		<a href="https://github.com/downloads/dainiusjocas/Computational-Linguistics/Collocations.jar">
+		<img border="0" width="90" src="http://www.sk-ps.ru/shr/wti/___SRC_PNG___/JAR.File.png"></a>
+	</div>
+
+	<h1><a href="http://github.com/dainiusjocas/Computational-Linguistics">Collocation Extraction</a>
+		<span class="small">by <a href="http://github.com/dainiusjocas">dainiusjocas</a></span></h1>
+
+	<div class="description">
+		Statistics of the project
+	</div>
+	<h2>Numbers found in Brown Corpus</h2>
+	<table border="1">
+		<tr>
+			<td>Words</td><td>1008320</td>
+		</tr>
+		<tr>
+			<td>Words with type "NN"</td><td>168026</td>
+		</tr>
+		<tr>
+			<td>Words with type "JJ"</td><td>68728</td>
+		</tr>
+		<tr>
+			<td>Words with type "VB"</td><td>33985</td>
+		</tr>
+		<tr>
+			<td>Bigrams found</td><td>300340</td>
+		</tr>
+	</table>
+	<br/>
+	
+	<h2>10 most frequen bigrams</h2>
+	<table border="1">
+		<tr>
+			<th>Bigram</th><th>Count</th>
+		</tr>
+		<tr>
+			<td>af/NN_af/NN</td><td>299 </td>
+		</tr>
+		<tr>
+			<td>high/JJ_school/NN</td><td>78</td>
+		</tr>
+		<tr>
+			<td>world/NN_war/NN</td><td>69</td>
+		</tr>
+		<tr>
+			<td>white/JJ_house/NN</td><td>68</td>
+		</tr>
+		<tr>
+			<td>fiscal/JJ_year/NN</td><td>67</td>
+		</tr>
+		<tr>
+			<td>old/JJ_man/NN</td><td>67</td>
+		</tr>
+		<tr>
+			<td>peace/NN_corps/NN</td><td>57</td>
+		</tr><tr>
+			<td>long/JJ_time/NN</td><td>50</td>
+		</tr>
+		<tr>
+			<td>young/JJ_man/NN</td><td>50</td>
+		</tr>
+		<tr>
+			<td>time/NN_time/NN</td><td>47</td>
+		</tr>
+	</table> 
+	<p>You can see more bigrams that are frequent <a href="frequency.html">here</a>.</p>
+	<p>First of all, I should say that there were no result cleaning because there were no such requirement, so the results are very raw. The most frequent bigram is “af/NN_af/NN” which is quite strange because it has no meaning but in corpus file occurences of this word “Af”are very often. We can check if in the corpus there is such a word by simply running UNIX shell utility grep by typing “grep -i “>af<” [data_file]” and in the terminal should be printed each line where this word occurs. Other most frequent bigrams look good and are likely to be true collocations. In conclusion, result of simple frequency counting are reliable. </p>
+
+	<h2>10 bigrams with largest chi-square value</h2>
+	<table border="1">
+		<tr>
+			<th>Bigram</th><th>Chi-square value</th>
+		</tr>
+		<tr>
+			<td>new/JJ_time/NN </td><td>13.365136 </td>
+		</tr>
+		<tr>
+			<td>new/JJ_af/NN </td><td>11.17747 </td>
+		</tr>
+		<tr>
+			<td>new/JJ_man/NN </td><td>9.893212 </td>
+		</tr>
+		<tr>
+			<td>new/JJ_state/NN</td><td>9.193513</td>
+		</tr>
+		<tr>
+			<td>time/NN_time/NN</td><td>9.18815</td>
+		</tr>
+		<tr>
+			<td>such/JJ_time/NN</td><td>8.548816</td>
+		</tr>
+		<tr>
+			<td>time/NN_af/NN</td><td>7.684192</td>
+		</tr><tr>
+			<td>af/NN_time/NN</td><td>7.684192</td>
+		</tr>
+		<tr>
+			<td>new/JJ_way/NN</td><td>7.333554</td>
+		</tr>
+		<tr>
+			<td>such/JJ_af/NN</td><td>7.15</td>
+		</tr>
+	</table> 
+	<p>You can see more bigrams that has large chi-square value <a href="chi_square.html">here</a>.</p>
+	<p>To compute chi square values for bigrams this formula was used  
+	<pre>chi_square_value = (head * tail) / total_number_of_bigrams</pre>
+	
+		where head means number of occurences of specific head in all bigrams; tail - number of occurrences of specific tail in all bigrams.<p>
+		Chi-square value is like expected value of specific bigram because you multiply probability to find tail
+		with probablity to find tail in the bigrams list with total number of bigrams.
+		When You have chi-square value and simple frequency You can investigate if bigram is not only just coincidence.
+	</p>
+	<p>From the very first look to the table of chi-square values you can observe that collocations with words like "new" and "time"
+		should be very frequent in order to be decided as collocations, because they have really large chi-square value.
+	</p>
+	
+	<br/><br/>
+	<div>
+		<a href="index.html">Go to main page</a>
+	</div>
+	<div class="footer">
+      get the source code on GitHub : <a href="http://github.com/dainiusjocas/Computational-Linguistics">dainiusjocas/Computational-Linguistics</a>
+   </div>
+  
+</body>
+</html>

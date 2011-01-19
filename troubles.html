@@ -9,10 +9,10 @@
 	
 	<style type="text/css">
 		body {
-  		margin-top: 1.0em;
-  		background-color: #fd8fb7;
+		margin-top: 1.0em;
+		background-color: #fd8fb7;
 		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #000000;
+		color: #000000;
     }
     #container {
       margin: 0 auto;
@@ -40,35 +40,30 @@
 
     <div class="download">
       <a href="http://github.com/dainiusjocas/Computational-Linguistics/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+	<img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
       <a href="http://github.com/dainiusjocas/Computational-Linguistics/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+	<img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
       <a href="https://github.com/downloads/dainiusjocas/Computational-Linguistics/Collocations.jar">
-        <img border="0" width="90" src="http://www.sk-ps.ru/shr/wti/___SRC_PNG___/JAR.File.png"></a>
+	<img border="0" width="90" src="http://www.sk-ps.ru/shr/wti/___SRC_PNG___/JAR.File.png"></a>
     </div>
 
     <h1><a href="http://github.com/dainiusjocas/Computational-Linguistics">Collocation Extraction</a>
       <span class="small">by <a href="http://github.com/dainiusjocas">dainiusjocas</a></span></h1>
 
     <div class="description">
-      Preject Title: Collocation Extraction From Text Corpora
+      Troubles faced
     </div>
 
-    <p>This simple Java application helps you to extract information about bigrams from corpus files which are under BrownXML.xsd XML schema</p>
-    <a href="how_to_use.html"><h2>Instruction how to use this application are <u>here</u>?</h2></a>
+  <h3>Implementation with Ruby</h3>
+  <p>From the first look the easiest solution seemed to be writing Ruby script to get required results. 
+      But after having half of the project done, Ruby showed unacceptable performance working with large XML files. 
+      Brown Corpus which is 27 MB flushed 4 GB of RAM and script usually stopped responding. Problem was 
+      solved by choosing Java provided XML parsing engine which performed reasonably good.
+  </p>
+  
+  <h3>Validation of Results</h3>
+  <p>Ifound it difficult to validate results whether their are reliable or not.</p>
 
-<h2>Very Quick Tutorial</h2>
-<p>You should run Collocation.jar archive by typing into shell:
-<pre>java -jar Collocations.jar Corpus.xml results.txt -f 1000</pre></p>
-<h2>Quick Links</h2>
-<ol>
-  <li><a href="frequency.html">1000 most frequen bigrams from Brown Corpus</a></li>
-  <li><a href="chi_square.html">1000 bigrams from Brown Corpus with highest chi-square values</a></li>
-  <li><a href="statistics.html">Statistics</a></li>
-  <li><a href="instructions.html">Instructions for the project</a></li>
-  <li><a href="troubles.html">Troubles</a></li>
-</ol>
-<h2>All results are extracted from full brown corpus.</h2>
 <h2>License</h2>
 <p>Creative Commons Attribution 3.0 License</p>
 <h2>Authors</h2>
