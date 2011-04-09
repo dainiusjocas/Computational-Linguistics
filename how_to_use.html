@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>dainiusjocas/Computational-Linguistics @ GitHub</title>
+	
+	<style type="text/css">
+		body {
+		margin-top: 1.0em;
+		background-color: #fd8fb7;
+		font-family: "Helvetica,Arial,FreeSans";
+		color: #000000;
+	}
+	#container {
+		margin: 0 auto;
+		width: 700px;
+	}
+		h1 { font-size: 3.8em; color: #027048; margin-bottom: 3px; }
+		h1 .small { font-size: 0.4em; }
+		h1 a { text-decoration: none }
+		h2 { font-size: 1.5em; color: #027048; }
+	h3 { text-align: center; color: #027048; }
+	a { color: #027048; }
+	.description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+	.download { float: right; }
+		pre { background: #000; color: #fff; padding: 15px;}
+	hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+	.footer { text-align:center; padding-top:30px; font-style: italic; }
+	</style>
+	
+</head>
+
+<body>
+<a href="http://github.com/dainiusjocas/Computational-Linguistics"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+<div id="container">
+
+	<div class="download">
+	<table>
+	<tr>
+	<td>
+		<a href="https://github.com/downloads/dainiusjocas/Computational-Linguistics/Collocations.jar">
+			<table>
+				<tr>
+					<td><img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></td>
+				</tr>
+				<tr>
+					<td>Application</td>
+				</tr>
+			</table>
+		</a>
+		</td>
+		<td>
+		<a href="https://github.com/downloads/dainiusjocas/Computational-Linguistics/example.xml">
+			<table>
+				<tr>
+					<td><img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></td>
+				</tr>
+				<tr>
+					<td>Sample Corpus</td>
+				</tr>
+			</table>
+		</a>
+		</td>
+		</tr>
+		<table>
+	</div>
+
+	<h1><a href="http://github.com/dainiusjocas/Computational-Linguistics">Collocation Extraction</a>
+		<span class="small">by <a href="http://github.com/dainiusjocas">dainiusjocas</a></span></h1>
+
+	<div class="description">
+		<h2>How to use application</h2>
+	</div>
+
+	<ol>
+		<li>
+			<h4>How to download the application?</h4>
+			<p>At the top of the page there are two icons. Click on the left icon and the download will start.</p>
+		</li>
+		<li>
+			<h4>From where download data to execute on?</h4>
+			<p>At the top of the page there are two icons. Click on the right icon with right button and choose "Save Link As".
+			NOTE: this is just sample corpus. To download full Brown corpus go to <a>http://nltk.googlecode.com/svn/trunk/nltk_data/index.xml</a>.</p>
+		</li>
+		<li>
+			<h4>What else do I need to run the application?</h4>
+			<p>To run application You need to have Java VM installed on Your computer and [JAVA_HOME]/bin on PATH.
+			Also, I advice to use some command line tool.</p>
+		</li>
+		<li>
+			<h4>How to run application?</h4>
+			<p>Navigate to the directory where You have downloaded "Collocations.jar" file. Type into shell line which is formated like this:
+			<pre>java -jar Collocations.jar [data_file][output_file][mode][options]</pre>
+			Where:
+			<ul> 
+				<li>"data_file" is file where corpus is stored (e.g. the one you downloaded at second step).</li>
+				<li>"output_file" is the file where you will get the results of computations.</li>
+				<li>"mode" can be "-f" - frequency count, or "-c" - chi-square computation.</li>
+				<li>"options" for now you can give this parameter only as number which tells 
+					to application how many lines to write to output file.</li>
+			</ul>
+			</p>
+		</li>
+		<li>
+			<h4>How to read output file?</h4>
+			<p>Output file is formated in that way: every line has two parts divided by " " symbol, where:
+				<ul>
+					<li>First part is bigram formated in that way: "[head]/[TYPE]_[tail]/[type]".</li>
+					<li>Second part is number showing either how many times the collocation occurred in the corpus or chi-square value of bigram.
+					It depend on which parameter "-f" or "-c" you gave to the application.</li>
+				</ul>
+			</p>
+		</li>
+	</ol>
+	
+	<div>
+		<a href="index.html">Go to main page</a>
+	</div>
+	
+	<div class="footer">
+		get the source code on GitHub : <a href="http://github.com/dainiusjocas/Computational-Linguistics">dainiusjocas/Computational-Linguistics</a>
+	</div>
+
+</div>
+
+  
+</body>
+</html>
